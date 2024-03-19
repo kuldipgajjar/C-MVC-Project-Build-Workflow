@@ -18,36 +18,36 @@ This GitHub Actions workflow automates the build and deployment process for a C#
 
 11. Ensure that the following tools are available on the runner:
 
-12. - Microsoft Visual Studio 2022 (or compatible version)
-13. - PowerShell for executing scripts
+    - Microsoft Visual Studio 2022 (or compatible version)
+    - PowerShell for executing scripts
 
-14. ### Workflow Steps
+12. ### Workflow Steps
 
-15. 1. **Checkout Repository**: Checks out the repository to the GitHub Actions runner.
-16. 2. **Build Projects**: Uses MSBuild to build the Web and API projects.
-17. 3. **Create API and Web Directories**: Creates directories for storing the built artifacts.
-18. 4. **Delete XML Files**: Removes XML files from the API and Web directories.
-19. 5. **Copy Artifacts**: Copies the built artifacts to the appropriate directories.
-20. 6. **Upload Artifacts**: Uploads the artifacts as GitHub Action artifacts for later use.
-21. 7. **Download Artifacts**: Downloads the uploaded artifacts to the runner for verification.
-22. 8. **Check Artifacts**: Verifies the presence of artifacts in the downloaded directories.
+    1. **Checkout Repository**: Checks out the repository to the GitHub Actions runner.
+    2. **Build Projects**: Uses MSBuild to build the Web and API projects.
+    3. **Create API and Web Directories**: Creates directories for storing the built artifacts.
+    4. **Delete XML Files**: Removes XML files from the API and Web directories.
+    5. **Copy Artifacts**: Copies the built artifacts to the appropriate directories.
+    6. **Upload Artifacts**: Uploads the artifacts as GitHub Action artifacts for later use.
+    7. **Download Artifacts**: Downloads the uploaded artifacts to the runner for verification.
+    8. **Check Artifacts**: Verifies the presence of artifacts in the downloaded directories.
 
-23. ### Customize Paths
+13. ### Customize Paths
 
-24. If your project's file structure differs, make sure to update the paths in the workflow script accordingly. Modify the following paths in the script to match your project structure:
+14. If your project's file structure differs, make sure to update the paths in the workflow script accordingly. Modify the following paths in the script to match your project structure:
 
-25. - `${{github.workspace}}\Web.csproj`
-26. - `${{github.workspace}}\API.csproj`
-27. - `${{github.workspace}}\Web`
-28. - `${{github.workspace}}\API`
-29. - `${{github.workspace}}\Web-artifacts`
-30. - `${{github.workspace}}\API-artifacts`
+  - `${{github.workspace}}\Web.csproj`
+  - `${{github.workspace}}\API.csproj`
+  - `${{github.workspace}}\Web`
+  - `${{github.workspace}}\API`
+  - `${{github.workspace}}\Web-artifacts`
+  - `${{github.workspace}}\API-artifacts`
 
-31. ### Notes
+15. ### Notes
 
-32. - Ensure that appropriate permissions are set for executing scripts and creating directories.
-33. - Review the script and adjust any specific build configurations or additional steps as needed for your project.
+  - Ensure that appropriate permissions are set for executing scripts and creating directories.
+  - Review the script and adjust any specific build configurations or additional steps as needed for your project.
 
-34. ## License
+16. ## License
 
-35. This project is licensed under the [MIT License](LICENSE).
+17. This project is licensed under the [MIT License](LICENSE).
