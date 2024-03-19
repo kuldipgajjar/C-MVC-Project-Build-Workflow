@@ -1,0 +1,69 @@
+name: Build CSharp Project
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Projects
+        shell: cmd
+        run: |
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" ${{github.workspace}}\Web.csproj /t:Rebuild /p:Configuration=Release /p:OutputPath=${{github.workspace}}\bin\Release\WEB
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" ${{github.workspace}}\API.csproj /t:Rebuild /p:Configuration=Release /p:OutputPath=${{github.workspace}}\bin\Release\API
+
+      - name: Create API and Web directories
+        run: |
+          mkdir ${{github.workspace}}\Web
+          mkdir ${{github.workspace}}\API
+  
+      - name: Delete XML files from API directory
+        run: |
+          Remove-Item -Path '${{github.workspace}}\bin\Release\API\bin\*.xml' -Force
+
+      - name: Delete XML files from Web directory
+        run: |
+          Remove-Item -Path '${{github.workspace}}\bin\Release\WEB\bin\*.xml' -Force
+
+      - name: Copy artifacts to Web directory
+        shell: cmd
+        run: |
+          powershell -Command "Copy-Item -Path '${{github.workspace}}\bin\Release\API\bin\*' -Destination '${{github.workspace}}\Web' -Recurse -Force"
+
+      - name: Copy artifacts to API directory
+        shell: cmd
+        run: |
+          powershell -Command "Copy-Item -Path '${{github.workspace}}\bin\Release\WEB\bin\*' -Destination '${{github.workspace}}\API' -Recurse -Force"
+      
+      - name: Upload Web artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: web-artifacts
+          path: ${{github.workspace}}\Web
+
+      - name: Upload API artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: api-artifacts
+          path: ${{github.workspace}}\API
+
+      - name: Download Web artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: web-artifacts
+          path: ${{github.workspace}}\Web-artifacts
+
+      - name: Download API artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: api-artifacts
+          path: ${{github.workspace}}\API-artifacts
+
+      - name: Check Web artifacts
+        run: |
+          dir ${{github.workspace}}\Web-artifacts
+          dir ${{github.workspace}}\API-artifacts
